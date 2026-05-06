@@ -441,29 +441,3 @@ st.markdown("---")
 # Refresh button (optional)
 if st.button("🔄 Refresh Session"):
     st.rerun()
-
-import streamlit as st
-import os
-import urllib.request
-from tensorflow.keras.models import load_model
-
-# Dictionary of your models and their Hugging Face links
-MODELS = {
-    "Best Model": "https://huggingface.co/sabarrish05/cattles-model/blob/main/best_cattle_breed.h5",
-    "Final Model": "https://huggingface.co/sabarrish05/cattles-model/blob/main/cattle_breed_final.h5"
-}
-
-def download_model(name, url):
-    filename = f"{name.replace(' ', '_').lower()}.h5"
-    if not os.path.exists(filename):
-        with st.spinner(f"Downloading {name}..."):
-            urllib.request.urlretrieve(url, filename)
-    return filename
-
-# Sidebar to choose the model
-selection = st.sidebar.selectbox("Choose Model Version", list(MODELS.keys()))
-
-# Run the download and load
-selected_url = MODELS[selection]
-local_file = download_model(selection, selected_url)
-model = load_model(local_file)
